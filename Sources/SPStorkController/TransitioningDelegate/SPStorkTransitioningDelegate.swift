@@ -23,6 +23,7 @@ import UIKit
 
 public final class SPStorkTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
     
+    public var transparentBottomHeight: CGFloat? = nil
     public var swipeToDismissEnabled: Bool = true
     public var tapAroundToDismissEnabled: Bool = true
     public var showCloseButton: Bool = false

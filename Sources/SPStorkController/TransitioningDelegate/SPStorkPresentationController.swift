@@ -147,7 +147,12 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         }
         self.updateLayoutCloseButton()
         
-        let initialFrame: CGRect = presentingViewController.isPresentedAsStork ? presentingViewController.view.frame : containerView.bounds
+        var initialFrame: CGRect = presentingViewController.isPresentedAsStork ? presentingViewController.view.frame : containerView.bounds
+        
+        if let transparentBottomHeight = transitioningDelegate?.transparentBottomHeight {
+            initialFrame.origin.y = CGFloat(0)
+            initialFrame.size.height -= transparentBottomHeight
+        }
         
         containerView.insertSubview(self.snapshotViewContainer, belowSubview: presentedViewController.view)
         self.snapshotViewContainer.frame = initialFrame
@@ -163,6 +168,21 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
             self.backgroundView.bottomAnchor.constraint(equalTo: window.bottomAnchor)
         ])
         
+        if let transparentBottomHeight = transitioningDelegate?.transparentBottomHeight {
+
+            let view = UIView()
+            view.backgroundColor = .black
+            view.translatesAutoresizingMaskIntoConstraints = false
+            self.backgroundView.insertSubview(view, at: 0)
+            
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: self.backgroundView.topAnchor),
+                view.leftAnchor.constraint(equalTo: self.backgroundView.leftAnchor),
+                view.rightAnchor.constraint(equalTo: self.backgroundView.rightAnchor),
+                view.bottomAnchor.constraint(equalTo: self.backgroundView.bottomAnchor, constant: -transparentBottomHeight)
+            ])
+        }
+
         let transformForSnapshotView = CGAffineTransform.identity
             .translatedBy(x: 0, y: -snapshotViewContainer.frame.origin.y)
             .translatedBy(x: 0, y: self.topSpace)
@@ -248,7 +268,11 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         guard let containerView = containerView else { return }
         self.startDismissing = true
         
-        let initialFrame: CGRect = presentingViewController.isPresentedAsStork ? presentingViewController.view.frame : containerView.bounds
+        var initialFrame: CGRect = presentingViewController.isPresentedAsStork ? presentingViewController.view.frame : containerView.bounds
+        if let transparentBottomHeight = transitioningDelegate?.transparentBottomHeight {
+            initialFrame.origin.y = CGFloat(0)
+            initialFrame.size.height -= transparentBottomHeight
+        }
         
         let initialTransform = CGAffineTransform.identity
             .translatedBy(x: 0, y: -initialFrame.origin.y)
