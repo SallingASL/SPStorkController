@@ -171,7 +171,7 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         if let transparentBottomHeight = transitioningDelegate?.transparentBottomHeight {
 
             let view = UIView()
-            view.backgroundColor = .black
+            view.backgroundColor = .clear
             view.translatesAutoresizingMaskIntoConstraints = false
             self.backgroundView.insertSubview(view, at: 0)
             
