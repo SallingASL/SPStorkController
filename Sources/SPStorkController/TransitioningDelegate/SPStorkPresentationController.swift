@@ -62,6 +62,10 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         return (statusBarHeight < 25) ? 30 : statusBarHeight
     }
     
+    private var hasTransparentBottomView: Bool {
+        transitioningDelegate != nil
+    }
+    
     private let alpha: CGFloat =  0.51
     var cornerRadius: CGFloat = 10
     
@@ -158,7 +162,7 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         self.snapshotViewContainer.frame = initialFrame
         self.updateSnapshot()
         self.snapshotView?.layer.cornerRadius = 0
-        self.backgroundView.backgroundColor = UIColor.black
+        self.backgroundView.backgroundColor = hasTransparentBottomView ? UIColor.clear : UIColor.black
         self.backgroundView.translatesAutoresizingMaskIntoConstraints = false
         containerView.insertSubview(self.backgroundView, belowSubview: self.snapshotViewContainer)
         NSLayoutConstraint.activate([
@@ -171,7 +175,7 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         if let transparentBottomHeight = transitioningDelegate?.transparentBottomHeight {
 
             let view = UIView()
-            view.backgroundColor = .clear
+            view.backgroundColor = .black
             view.translatesAutoresizingMaskIntoConstraints = false
             self.backgroundView.insertSubview(view, at: 0)
             
