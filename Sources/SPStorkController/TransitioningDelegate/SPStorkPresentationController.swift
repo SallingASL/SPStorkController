@@ -154,7 +154,6 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         var initialFrame: CGRect = presentingViewController.isPresentedAsStork ? presentingViewController.view.frame : containerView.bounds
         
         if let transparentBottomHeight = transitioningDelegate?.transparentBottomHeight {
-            initialFrame.origin.y = CGFloat(0)
             initialFrame.size.height -= transparentBottomHeight
         }
         
