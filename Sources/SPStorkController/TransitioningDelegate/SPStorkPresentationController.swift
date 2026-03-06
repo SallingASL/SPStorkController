@@ -340,6 +340,12 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         super.dismissalTransitionDidEnd(completed)
         guard let containerView = containerView else { return }
         
+        if hasTransparentBottomView {
+            if let view = self.backgroundView.subviews.first {
+                view.removeFromSuperview()
+            }
+        }
+        
         self.backgroundView.removeFromSuperview()
         self.snapshotView?.removeFromSuperview()
         self.snapshotViewContainer.removeFromSuperview()
