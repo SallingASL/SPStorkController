@@ -62,9 +62,13 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         return (statusBarHeight < 25) ? 30 : statusBarHeight
     }
     
+    /* Modification by SG - begin */
+    
     private var hasTransparentBottomView: Bool {
         transitioningDelegate != nil
     }
+    
+    /* Modification by SG - end */
     
     private let alpha: CGFloat =  0.51
     var cornerRadius: CGFloat = 10
@@ -153,15 +157,25 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         
         var initialFrame: CGRect = presentingViewController.isPresentedAsStork ? presentingViewController.view.frame : containerView.bounds
         
+        /* Modification by SG - begin */
+        
         if let transparentBottomHeight = transitioningDelegate?.transparentBottomHeight {
             initialFrame.size.height -= transparentBottomHeight
         }
+        
+        /* Modification by SG - end */
         
         containerView.insertSubview(self.snapshotViewContainer, belowSubview: presentedViewController.view)
         self.snapshotViewContainer.frame = initialFrame
         self.updateSnapshot()
         self.snapshotView?.layer.cornerRadius = 0
+        
+        /* Modification by SG - begin */
+        
         self.backgroundView.backgroundColor = hasTransparentBottomView ? UIColor.clear : UIColor.black
+        
+        /* Modification by SG - end */
+
         self.backgroundView.translatesAutoresizingMaskIntoConstraints = false
         containerView.insertSubview(self.backgroundView, belowSubview: self.snapshotViewContainer)
         NSLayoutConstraint.activate([
@@ -170,6 +184,8 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
             self.backgroundView.rightAnchor.constraint(equalTo: window.rightAnchor),
             self.backgroundView.bottomAnchor.constraint(equalTo: window.bottomAnchor)
         ])
+        
+        /* Modification by SG - begin */
         
         if let transparentBottomHeight = transitioningDelegate?.transparentBottomHeight {
 
@@ -185,6 +201,8 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
                 view.bottomAnchor.constraint(equalTo: self.backgroundView.bottomAnchor, constant: -transparentBottomHeight)
             ])
         }
+        
+        /* Modification by SG - end */
 
         let transformForSnapshotView = CGAffineTransform.identity
             .translatedBy(x: 0, y: -snapshotViewContainer.frame.origin.y)
@@ -339,12 +357,16 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         super.dismissalTransitionDidEnd(completed)
         guard let containerView = containerView else { return }
         
+        /* Modification by SG - begin */
+        
         if hasTransparentBottomView {
             if let view = self.backgroundView.subviews.first {
                 view.removeFromSuperview()
             }
         }
         
+        /* Modification by SG - end */
+
         self.backgroundView.removeFromSuperview()
         self.snapshotView?.removeFromSuperview()
         self.snapshotViewContainer.removeFromSuperview()

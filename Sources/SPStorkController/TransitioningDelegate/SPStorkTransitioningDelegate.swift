@@ -23,7 +23,16 @@ import UIKit
 
 public final class SPStorkTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
     
+    if let transparentBottomHeight = transitioningDelegate?.transparentBottomHeight {
+        initialFrame.size.height -= transparentBottomHeight
+    }
+    
+    /* Modification by SG - begin */
+    
     public var transparentBottomHeight: CGFloat? = CGFloat(83)
+    
+    /* Modification by SG - end */
+
     public var swipeToDismissEnabled: Bool = true
     public var tapAroundToDismissEnabled: Bool = true
     public var showCloseButton: Bool = false
